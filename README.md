@@ -1,2 +1,0 @@
-# py-django
-Python Django
