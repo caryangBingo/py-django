@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 # @Author: Caryang
 # @Date:   2016-10-12 22:52:34
-# @Last Modified by:   Caryang
-# @Last Modified time: 2016-10-16 16:05:54
+# @Last Modified by:   caryangBingo
+# @Last Modified time: 2016-10-18 23:14:39
 from django.shortcuts import render
 from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
-from sign.models import Event
+from sign.models import Event,Guest
 
 # Create your views here.
 #def index(request):
@@ -45,7 +45,6 @@ def login_action(request):
 #发布会管理
 #
 @login_required
-
 #def event_manage(request):
 #	username = request.session.get('user','')
 #	return render(request,"event_manage.html",{"user":username})
@@ -61,5 +60,12 @@ def sreach_name(request):
 	username = request.session.get('user','')
 	sreach_name = request.GET.get("name","")
 	sreach_name_bytes = sreach_name.encode(encoding="utf-8")
-	event_list = Event.objects.filter(name_contains=sreach_name)
+	event_list = Event.objects.filter(name__contains=sreach_name)
 	return render(request,"event_manage.html",{"user":username,"events":event_list})
+
+#嘉宾管理
+@login_required
+def guest_manage(request):
+	guest_list = Guest.objects.all()
+	username = request.session.get('user','')
+	return render(request,"guest_manage.html",{"user":username,"guests":guest_list})

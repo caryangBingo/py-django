@@ -1,3 +1,8 @@
+# -*- coding: utf-8 -*-
+# @Author: caryangBingo
+# @Date:   2016-10-18 20:45:52
+# @Last Modified by:   caryangBingo
+# @Last Modified time: 2016-10-18 22:39:36
 #!/usr/bin/env python
 import os
 import sys
