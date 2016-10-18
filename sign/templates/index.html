@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Django Page</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+</head>
+<body>
+    <h1>发布会管理</h1>
+    <form method="post" action="/login_action/">
+    	<input name="username" type="text" placeholder="username"><br>
+    	<input name="password" type="password" placeholder="password">{{error}}<br>
+    	<button id="btn" type="submit">登录</button>
+
+    	{% csrf_token %}
+    </form>
+</body>
+</html>
