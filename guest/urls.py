@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # @Author: crazyang
 # @Date:   2016-10-13 11:02:13
-# @Last Modified by:   caryangBingo
-# @Last Modified time: 2016-10-18 22:22:51
+# @Last Modified by:   crazyang
+# @Last Modified time: 2016-10-19 18:28:59
 """guest URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -30,6 +30,7 @@ urlpatterns = [
     url(r'^index/$',views.index),
     url(r'^login_action/$',views.login_action),
     url(r'^event_manage/$',views.event_manage),
-    url(r'^sreach_name/$',views.sreach_name),
     url(r'^guest_manage/$',views.guest_manage),
+    url(r'^sreach_name/$',views.sreach_name),
+    url(r'^sreach_phone/$',views.sreach_phone),
 ]

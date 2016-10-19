@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # @Author: Caryang
 # @Date:   2016-10-12 22:52:34
-# @Last Modified by:   caryangBingo
-# @Last Modified time: 2016-10-18 23:14:39
+# @Last Modified by:   crazyang
+# @Last Modified time: 2016-10-19 18:29:36
 from django.shortcuts import render
 from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib import auth
@@ -54,18 +54,27 @@ def event_manage(request):
 	username = request.session.get('user','')
 	return render(request,"event_manage.html",{"user":username,"events":event_list})
 
-#发布会名称搜索
-@login_required
-def sreach_name(request):
-	username = request.session.get('user','')
-	sreach_name = request.GET.get("name","")
-	sreach_name_bytes = sreach_name.encode(encoding="utf-8")
-	event_list = Event.objects.filter(name__contains=sreach_name)
-	return render(request,"event_manage.html",{"user":username,"events":event_list})
-
 #嘉宾管理
 @login_required
 def guest_manage(request):
 	guest_list = Guest.objects.all()
 	username = request.session.get('user','')
 	return render(request,"guest_manage.html",{"user":username,"guests":guest_list})
+
+#发布会名称搜索
+@login_required
+def sreach_name(request):
+	username = request.session.get('user','')
+	sreach_name = request.GET.get("name","")
+	#sreach_name_bytes = sreach_name.encode(encoding="utf-8")
+	event_list = Event.objects.filter(name__contains=sreach_name)
+	return render(request,"event_manage.html",{"user":username,"events":event_list})
+
+#嘉宾列表手机号搜索
+@login_required
+def sreach_phone(request):
+	username = request.session.get('user','')
+	sreach_name = request.GET.get("phone","")
+	#sreach_name_bytes = sreach_name.encode(encoding="utf-8")
+	guest_list = Event.objects.filter(phone__contains=sreach_name)
+	return render(request,"guest_manage.html",{"user":username,"events":guest_list})
