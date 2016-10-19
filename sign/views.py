@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
 # @Author: Caryang
 # @Date:   2016-10-12 22:52:34
-# @Last Modified by:   crazyang
-# @Last Modified time: 2016-10-19 18:29:36
+# @Last Modified by:   caryangBingo
+# @Last Modified time: 2016-10-19 22:37:33
 from django.shortcuts import render
-from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib import auth
-from django.contrib.auth.decorators import login_required
 from sign.models import Event,Guest
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse,HttpResponseRedirect
+from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
+from django.shortcuts import render,get_object_or_404
 
 # Create your views here.
 #def index(request):
@@ -55,11 +57,29 @@ def event_manage(request):
 	return render(request,"event_manage.html",{"user":username,"events":event_list})
 
 #嘉宾管理
+"""
 @login_required
 def guest_manage(request):
 	guest_list = Guest.objects.all()
 	username = request.session.get('user','')
 	return render(request,"guest_manage.html",{"user":username,"guests":guest_list})
+"""
+
+@login_required
+def guest_manage(request):
+	username = request.session.get('user','')
+	guest_list = Guest.objects.all()
+	paginator = Paginator(guest_list,2)
+	page = request.GET.get('page')
+	try:
+		contacts = paginator.page(page)
+	except PageNotAnInteger:
+		#if page is not an integer,deliver first page.
+		contacts = paginator.page(1)
+	except EmptyPage:
+		#if page is out of range(e.g.9999),deliver last page of results.
+		contacts = paginator.page(paginator.num_pages)
+	return render(request,"guest_manage.html",{"user":username,"guests":contacts})
 
 #发布会名称搜索
 @login_required
@@ -78,3 +98,9 @@ def sreach_phone(request):
 	#sreach_name_bytes = sreach_name.encode(encoding="utf-8")
 	guest_list = Event.objects.filter(phone__contains=sreach_name)
 	return render(request,"guest_manage.html",{"user":username,"events":guest_list})
+
+#签到页面
+@login_required
+def sign_index(request,event_id):
+	event = get_object_or_404(Event,id=event_id)
+	return render(request,'sign_index.html',{'event':event})
