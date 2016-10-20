@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # @Author: Caryang
 # @Date:   2016-10-12 22:52:34
-# @Last Modified by:   caryangBingo
-# @Last Modified time: 2016-10-19 22:37:33
+# @Last Modified by:   crazyang
+# @Last Modified time: 2016-10-20 18:26:36
 from django.shortcuts import render
 from django.contrib import auth
 from sign.models import Event,Guest
@@ -45,12 +45,11 @@ def login_action(request):
 			return render(request, 'index.html', {'erros':'username or password error'})
 
 #发布会管理
-#
-@login_required
 #def event_manage(request):
 #	username = request.session.get('user','')
 #	return render(request,"event_manage.html",{"user":username})
 
+@login_required
 def event_manage(request):
 	event_list = Event.objects.all()
 	username = request.session.get('user','')
@@ -82,13 +81,30 @@ def guest_manage(request):
 	return render(request,"guest_manage.html",{"user":username,"guests":contacts})
 
 #发布会名称搜索
+"""
 @login_required
 def sreach_name(request):
 	username = request.session.get('user','')
-	sreach_name = request.GET.get("name","")
+	sreach_name = request.GET.get('name','')
 	#sreach_name_bytes = sreach_name.encode(encoding="utf-8")
-	event_list = Event.objects.filter(name__contains=sreach_name)
+	event_list = Event.objects.filter(name__icontains=sreach_name)
 	return render(request,"event_manage.html",{"user":username,"events":event_list})
+"""
+
+@login_required
+def sreach_name(request):
+	username = request.session.get('user','')
+	if 'sreach_name' request.GET:
+		sreach_name = request.GET['sreach_name']
+		if not sreach_name:
+			return render(request,'index.html')
+		else:
+			event_list = Event.objects.filter(name__icontains=sreach_name)
+			if len(event_list) == 0:
+				return render(request,'event_manage.html',{"events":event_list,"error":True})
+			else:
+				return render(request,'event_manage.html',{"events",event_list,"error":False})
+	return redirect("")
 
 #嘉宾列表手机号搜索
 @login_required
@@ -98,6 +114,7 @@ def sreach_phone(request):
 	#sreach_name_bytes = sreach_name.encode(encoding="utf-8")
 	guest_list = Event.objects.filter(phone__contains=sreach_name)
 	return render(request,"guest_manage.html",{"user":username,"events":guest_list})
+
 
 #签到页面
 @login_required

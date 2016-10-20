@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # @Author: crazyang
 # @Date:   2016-10-13 11:02:13
-# @Last Modified by:   caryangBingo
-# @Last Modified time: 2016-10-19 22:33:34
+# @Last Modified by:   crazyang
+# @Last Modified time: 2016-10-20 15:56:25
 """guest URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:

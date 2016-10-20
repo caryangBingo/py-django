@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # @Author: crazyang
 # @Date:   2016-10-13 11:02:13
-# @Last Modified by:   caryangBingo
-# @Last Modified time: 2016-10-18 22:51:32
+# @Last Modified by:   crazyang
+# @Last Modified time: 2016-10-20 15:57:58
 from __future__ import unicode_literals
 
 from django.db import models
