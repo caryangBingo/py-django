@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # @Author: Caryang
 # @Date:   2016-10-12 22:52:34
-# @Last Modified by:   crazyang
-# @Last Modified time: 2016-10-20 18:26:36
+# @Last Modified by:   caryangBingo
+# @Last Modified time: 2016-10-20 22:29:27
 from django.shortcuts import render
 from django.contrib import auth
 from sign.models import Event,Guest
@@ -92,18 +92,18 @@ def sreach_name(request):
 """
 
 @login_required
-def sreach_name(request):
+def search_name(request):
 	username = request.session.get('user','')
-	if 'sreach_name' request.GET:
-		sreach_name = request.GET['sreach_name']
-		if not sreach_name:
+	if 'search_name' in request.GET.get:
+		search_name = request.GET['search_name']
+		if not search_name:
 			return render(request,'index.html')
 		else:
-			event_list = Event.objects.filter(name__icontains=sreach_name)
+			event_list = Event.objects.filter(name__contains=search_name)
 			if len(event_list) == 0:
-				return render(request,'event_manage.html',{"events":event_list,"error":True})
+				return render(request,'event_manage.html',{'events':event_list,"error":True})
 			else:
-				return render(request,'event_manage.html',{"events",event_list,"error":False})
+				return render(request,'event_manage.html',{'events':event_list,"error":False})
 	return redirect("")
 
 #嘉宾列表手机号搜索
