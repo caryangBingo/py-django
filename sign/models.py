@@ -2,9 +2,8 @@
 # @Author: crazyang
 # @Date:   2016-10-13 11:02:13
 # @Last Modified by:   crazyang
-# @Last Modified time: 2016-10-20 15:57:58
+# @Last Modified time: 2016-10-21 11:03:16
 from __future__ import unicode_literals
-
 from django.db import models
 
 # Create your models here.
