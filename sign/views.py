@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # @Author: Caryang
 # @Date:   2016-10-12 22:52:34
-# @Last Modified by:   caryangBingo
-# @Last Modified time: 2016-10-20 22:29:27
+# @Last Modified by:   crazyang
+# @Last Modified time: 2016-11-02 17:22:07
 from django.shortcuts import render
 from django.contrib import auth
 from sign.models import Event,Guest
@@ -110,9 +110,10 @@ def search_name(request):
 @login_required
 def sreach_phone(request):
 	username = request.session.get('user','')
-	sreach_name = request.GET.get("phone","")
-	#sreach_name_bytes = sreach_name.encode(encoding="utf-8")
-	guest_list = Event.objects.filter(phone__contains=sreach_name)
+	sreach_phone = request.GET.get("phone","")
+	print(sreach_phone)
+	sreach_phone_bytes = sreach_phone.encode(encoding="utf-8")
+	guest_list = Event.objects.filter(phone__contains=sreach_phone)
 	return render(request,"guest_manage.html",{"user":username,"events":guest_list})
 
 
@@ -121,3 +122,10 @@ def sreach_phone(request):
 def sign_index(request,event_id):
 	event = get_object_or_404(Event,id=event_id)
 	return render(request,'sign_index.html',{'event':event})
+
+#退出登录
+@login_required
+def logout(request):
+	auth.logout(request)
+	response = HttpResponseRedirect('/')
+	return response
