@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # @Author: Caryang
 # @Date:   2016-10-12 22:52:34
-# @Last Modified by:   crazyang
-# @Last Modified time: 2016-11-02 17:22:07
+# @Last Modified by:   caryangBingo
+# @Last Modified time: 2017-07-16 00:25:11
 from django.shortcuts import render
 from django.contrib import auth
 from sign.models import Event,Guest
@@ -45,10 +45,6 @@ def login_action(request):
 			return render(request, 'index.html', {'erros':'username or password error'})
 
 #发布会管理
-#def event_manage(request):
-#	username = request.session.get('user','')
-#	return render(request,"event_manage.html",{"user":username})
-
 @login_required
 def event_manage(request):
 	event_list = Event.objects.all()
@@ -68,7 +64,7 @@ def guest_manage(request):
 def guest_manage(request):
 	username = request.session.get('user','')
 	guest_list = Guest.objects.all()
-	paginator = Paginator(guest_list,2)
+	paginator = Paginator(guest_list, 2)
 	page = request.GET.get('page')
 	try:
 		contacts = paginator.page(page)
@@ -76,11 +72,12 @@ def guest_manage(request):
 		#if page is not an integer,deliver first page.
 		contacts = paginator.page(1)
 	except EmptyPage:
-		#if page is out of range(e.g.9999),deliver last page of results.
+		#if page is out of range(e.g. 9999),deliver last page of results.
 		contacts = paginator.page(paginator.num_pages)
 	return render(request,"guest_manage.html",{"user":username,"guests":contacts})
 
 #发布会名称搜索
+
 """
 @login_required
 def sreach_name(request):
@@ -91,6 +88,7 @@ def sreach_name(request):
 	return render(request,"event_manage.html",{"user":username,"events":event_list})
 """
 
+"""
 @login_required
 def search_name(request):
 	username = request.session.get('user','')
@@ -105,23 +103,55 @@ def search_name(request):
 			else:
 				return render(request,'event_manage.html',{'events':event_list,"error":False})
 	return redirect("")
+"""
+
+@login_required
+def search_name(request):
+	username = request.session.get('user','')
+	search_name = request.GET.get("name","")
+	event_list = Event.objects.filter(name__contains=search_name)
+	return render(request,"event_manage.html",{"user": username,
+																					"events": event_list})
 
 #嘉宾列表手机号搜索
 @login_required
-def sreach_phone(request):
+def search_phone(request):
 	username = request.session.get('user','')
-	sreach_phone = request.GET.get("phone","")
-	print(sreach_phone)
-	sreach_phone_bytes = sreach_phone.encode(encoding="utf-8")
-	guest_list = Event.objects.filter(phone__contains=sreach_phone)
-	return render(request,"guest_manage.html",{"user":username,"events":guest_list})
+	search_phone = request.GET.get("phone","")
+	#print(search_phone)
+	#search_phone_bytes = search_phone.encode(encoding="utf-8")
+	guest_list = Event.objects.filter(name__contains=search_phone)
+	return render(request,"guest_manage.html",{"user":username,																					"guests": guest_list})
 
 
 #签到页面
 @login_required
-def sign_index(request,event_id):
-	event = get_object_or_404(Event,id=event_id)
+def sign_index(request,eid):
+	event = get_object_or_404(Event,id=eid)
 	return render(request,'sign_index.html',{'event':event})
+
+#签到动作
+@login_required
+def sign_index_action(request,eid):
+	event = get_object_or_404(Event, id=eid)
+	phone = request.POST.get('phone','')
+	print(phone)
+
+	result = Guest.objects.filter(phone=phone)
+	if not result:
+		return render(request,'sign_index.html',{'event': event,'hint': 'phone error.'})
+
+	result = Guest.objects.filter(phone=phone,event_id=eid)
+	if not result:
+		return render(request,'sign_index.html',{'event': event,'hint': 'event id or phone error.'})
+
+	result = Guest.objects.get(phone=phone,event_id=eid)
+	if result.sign:
+		return render(request,'sign_index.html',{'event': event,'hint': "user has sign in."})
+	else:
+		Guest.objects.filter(phone=phone,event_id=eid).update(sign='1')
+		return render(request,'sign_index.html',{'event': event,'hint': 'sign in success!','guest': result})
+
 
 #退出登录
 @login_required

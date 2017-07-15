@@ -28,19 +28,21 @@
 	</nav>
 
 <!--嘉宾列表搜索表单-->
-<div class="page-header" style="margin-top:60px;width:300px;height:60px;background-color:White">
-	<div id="navbar" class="navbar-collapse collapse">
-		<from class="navbar-from" method="get" action="/search_name/">
-			<div class="form-group">
-    		<input name="phone" type="text" placeholder="手机号" class="form-control">
+	<form method="get" action="/search_phone/" name="phone">
+		<div class="page-header" style="padding-top: 30px;width:300px;height:130px;background-color:White">
+			<div id="navbar" class="navbar-collapse collapse">
+				<from class="navbar-from" method="get" action="/search_phone/">
+					<div class="form-group">
+			    	<input name="phone" type="text" placeholder="手机号" class="form-control">
+					</div>
+						<button type="submit" class="btn btn-success">搜索</button>
+				</from>
 			</div>
-				<button type="submit" class="btn btn-success">搜索</button>
-		</from>
-	</div>
-</div>
+		</div>
+	</form>
 
 	<!--嘉宾列表-->
-	<div class="row" style="margin-top:50px;width:300px;height:80px;border:5px">
+	<div class="row" style="padding-top:10px;">
 		<div class="col-md-6">
 			<table class="table table-striped">
 				<thead>
@@ -63,12 +65,11 @@
 			</table>
 		</div>
 	</div>
-
-	<!--列表分页器-->
-	<div class="pagination">
+		<!--列表分页器-->
+	<div class="pagination" style="padding-left:10px;width: 180px;height: 80spx;background-color:White">
 		<span class="step-links">
 			{% if guests.has_previous %}
-				<a href="?page={{ guests.previous_page_number }}">previous</a>
+			<a href="?page={{ guests.previous_page_number }}">previous</a>
 			{% endif %}
 				<span class="current">
 					Page {{ guests.number }} of {{ guests.paginator.num_pages }}.

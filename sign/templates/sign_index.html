@@ -25,16 +25,20 @@
 	</nav>
 
 	<!--签到功能-->
-	<div class="page-header">
+	<div class="page-header" style="padding-top: 80px;">
 		<div id="navbar" class="navbar-collapse">
 			<from class="navbar-form" method="post" action="/sign_index_action/{{ event.id }}/">
 				<div class="form-group">
-					<input name="phone" type="text" placeholder="收入手机号" class="form-control">
+					<input name="phone" type="text" placeholder="输入手机号" class="form-control">
 				</div>
 				<button type="submit" class="btn btn-success">签到</button>
+				<font color="red">
+					<br>{{ hint }}
+					<br>{{ guest.realname }}
+					<br>{{ guest.phone }}
+				</font>
 			</from>
 		</div>
 	</div>
-
 </body>
 </html>
